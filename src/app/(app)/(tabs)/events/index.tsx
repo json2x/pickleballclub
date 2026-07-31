@@ -53,7 +53,7 @@ export default function EventsScreen() {
                 registrations={bundle.registrations.filter((registration) => registration.event_id === event.id)}
                 courts={bundle.courts.filter((court) => court.event_id === event.id).length}
                 matches={bundle.matches.filter((match) => match.event_id === event.id)}
-                action={<Button label="Open" variant="secondary" onPress={() => router.push({ pathname: '/events/[eventId]/index', params: { eventId: event.id } })} />}
+                action={<Button label="Open" variant="secondary" onPress={() => router.push({ pathname: '/events/[eventId]', params: { eventId: event.id } })} />}
               />
             )) : <EmptyState title="No matching events" message="Change the filter or create a session to enable registration, courts, queues, smart rounds, and scoring." />}
           </Section>

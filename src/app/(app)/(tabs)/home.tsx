@@ -50,7 +50,7 @@ export default function HomeScreen() {
                 registrations={bundle.registrations.filter((registration) => registration.event_id === event.id)}
                 courts={bundle.courts.filter((court) => court.event_id === event.id).length}
                 matches={bundle.matches.filter((match) => match.event_id === event.id)}
-                action={<Button label="Open" variant="secondary" onPress={() => router.push({ pathname: '/events/[eventId]/index', params: { eventId: event.id } })} />}
+                action={<Button label="Open" variant="secondary" onPress={() => router.push({ pathname: '/events/[eventId]', params: { eventId: event.id } })} />}
               />
             )) : <EmptyState title="No upcoming sessions" message="Create an event to start registration, court setup, queueing, and smart round generation." />}
           </Section>

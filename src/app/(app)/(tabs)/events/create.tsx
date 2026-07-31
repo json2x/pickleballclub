@@ -67,7 +67,7 @@ export default function CreateEventScreen() {
       venue: venue.trim(),
     }, { onSuccess: (event) => {
       if (!event) return;
-      router.replace({ pathname: '/events/[eventId]/index', params: { eventId: event.id } });
+      router.replace({ pathname: '/events/[eventId]', params: { eventId: event.id } });
     } });
   };
 
