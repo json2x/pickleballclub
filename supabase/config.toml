@@ -1,0 +1,11 @@
+# This repository uses the hosted Supabase project directly.
+# Local Supabase services, ports, SMTP, auth emulation, and seed execution are
+# intentionally not configured.
+project_id = "pickleballclub"
+
+[db.migrations]
+enabled = true
+schema_paths = []
+
+[db.seed]
+enabled = false
