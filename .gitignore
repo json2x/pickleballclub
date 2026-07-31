@@ -28,7 +28,8 @@ yarn-debug.*
 yarn-error.*
 
 # Local environment files
-.env*.local
+.env*
+!.env.example
 
 # TypeScript
 *.tsbuildinfo
@@ -37,5 +38,10 @@ yarn-error.*
 .DS_Store
 *.pem
 
+.opencode/*
+!.opencode/skills/
+.opencode/skills/*
+!.opencode/skills/supabase-github-branching/
+!.opencode/skills/supabase-github-branching/SKILL.md
 documentation
 opencode.json

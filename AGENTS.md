@@ -1,6 +1,6 @@
 # AGENTS.md — Pickleball Club
 
-> **Repository state:** Design specification only. No implementation, build system, or tests exist yet. The active source of truth is `DESIGN.md` and the PDFs in `documentation/`.
+> **Repository state:** Active Expo implementation with a hosted Supabase backend. `DESIGN.md` and the PDFs in `documentation/` remain the product and UI source of truth.
 
 ## Tech Stack (Locked)
 
@@ -15,6 +15,32 @@
 - **Charts:** Victory Native or React Native Skia
 - **Local:** Expo SQLite, Expo SecureStore
 - **Native APIs:** Notifications, Camera, Haptics
+
+## Project Services
+
+- **Supabase:** [Dashboard](https://supabase.com/dashboard/projects)
+- **Organization:** Zenner (Free plan)
+- **Project name:** `pickleballclub`
+- **Region:** Southeast Asia (Singapore)
+- **Data API:** Enabled for the `public` schema
+- **New table exposure:** Enabled; review and restrict Data API access before production
+- **GitHub integration:** `json2x/pickleballclub`
+- **GitHub origin:** [git@github.com:json2x/pickleballclub.git](https://github.com/json2x/pickleballclub)
+
+Never commit the Supabase database password, API secrets, service-role key, or connection strings. Store local values in ignored environment files and production values in the deployment platform's secret store.
+
+## Hosted Supabase Workflow
+
+- Development and verification use the hosted `pickleballclub` project directly.
+- Do not run `supabase start`, `supabase db reset`, `--local`, local Supabase Docker services, or local seed workflows.
+- Keep every schema change in a new ordered file under `supabase/migrations/`; never edit an applied migration.
+- Inspect hosted tables and migration history before changing schema.
+- Preview pending migrations with `npm run supabase:push:dry`, then apply reviewed migrations with `npm run supabase:push` or the Supabase MCP migration tool.
+- Run hosted security and performance advisors after every DDL change.
+- Regenerate `src/types/database.ts` from the hosted project with `npm run supabase:types`.
+- Never put fixtures, test users, or production personal data into migrations. Destructive remote changes require a backup and explicit approval.
+
+See `supabase/README.md` for the complete command sequence.
 
 ## Planned Source Layout
 
