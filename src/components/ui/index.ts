@@ -1,6 +1,7 @@
 export * from './app-text';
 export * from './button';
 export * from './card';
+export * from './choice-group';
 export * from './feedback-state';
 export * from './screen';
 export * from './status-badge';
