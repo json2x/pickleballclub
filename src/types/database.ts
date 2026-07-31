@@ -39,6 +39,67 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcements: {
+        Row: {
+          body: string
+          club_id: string
+          created_at: string
+          created_by: string
+          event_id: string | null
+          id: string
+          published_at: string | null
+          status: Database["public"]["Enums"]["announcement_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          club_id: string
+          created_at?: string
+          created_by: string
+          event_id?: string | null
+          id?: string
+          published_at?: string | null
+          status?: Database["public"]["Enums"]["announcement_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          club_id?: string
+          created_at?: string
+          created_by?: string
+          event_id?: string | null
+          id?: string
+          published_at?: string | null
+          status?: Database["public"]["Enums"]["announcement_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcements_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "announcements_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "announcements_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       club_invitations: {
         Row: {
           accepted_at: string | null
@@ -259,6 +320,399 @@ export type Database = {
           },
         ]
       }
+      courts: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          name: string
+          notes: string | null
+          sort_order: number
+          status: Database["public"]["Enums"]["court_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          name: string
+          notes?: string | null
+          sort_order?: number
+          status?: Database["public"]["Enums"]["court_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          sort_order?: number
+          status?: Database["public"]["Enums"]["court_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "courts_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_registrations: {
+        Row: {
+          availability: Database["public"]["Enums"]["availability_status"]
+          checked_in_at: string | null
+          created_at: string
+          event_id: string
+          games_played: number
+          id: string
+          last_played_at: string | null
+          membership_id: string
+          queue_priority: number
+          status: Database["public"]["Enums"]["registration_status"]
+          updated_at: string
+        }
+        Insert: {
+          availability?: Database["public"]["Enums"]["availability_status"]
+          checked_in_at?: string | null
+          created_at?: string
+          event_id: string
+          games_played?: number
+          id?: string
+          last_played_at?: string | null
+          membership_id: string
+          queue_priority?: number
+          status?: Database["public"]["Enums"]["registration_status"]
+          updated_at?: string
+        }
+        Update: {
+          availability?: Database["public"]["Enums"]["availability_status"]
+          checked_in_at?: string | null
+          created_at?: string
+          event_id?: string
+          games_played?: number
+          id?: string
+          last_played_at?: string | null
+          membership_id?: string
+          queue_priority?: number
+          status?: Database["public"]["Enums"]["registration_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_registrations_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "club_memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_rounds: {
+        Row: {
+          confirmed_by: string | null
+          created_at: string
+          event_id: string
+          explanation: string | null
+          id: string
+          quality_score: number | null
+          round_number: number
+          status: Database["public"]["Enums"]["round_status"]
+          strategy: string
+          updated_at: string
+        }
+        Insert: {
+          confirmed_by?: string | null
+          created_at?: string
+          event_id: string
+          explanation?: string | null
+          id?: string
+          quality_score?: number | null
+          round_number: number
+          status?: Database["public"]["Enums"]["round_status"]
+          strategy?: string
+          updated_at?: string
+        }
+        Update: {
+          confirmed_by?: string | null
+          created_at?: string
+          event_id?: string
+          explanation?: string | null
+          id?: string
+          quality_score?: number | null
+          round_number?: number
+          status?: Database["public"]["Enums"]["round_status"]
+          strategy?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rounds_confirmed_by_fkey"
+            columns: ["confirmed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_rounds_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          capacity: number
+          check_in_open: boolean
+          club_id: string
+          created_at: string
+          created_by: string
+          current_round_number: number
+          description: string | null
+          ends_at: string
+          format: Database["public"]["Enums"]["event_format"]
+          id: string
+          name: string
+          starts_at: string
+          status: Database["public"]["Enums"]["event_status"]
+          updated_at: string
+          venue: string
+        }
+        Insert: {
+          capacity?: number
+          check_in_open?: boolean
+          club_id: string
+          created_at?: string
+          created_by: string
+          current_round_number?: number
+          description?: string | null
+          ends_at: string
+          format?: Database["public"]["Enums"]["event_format"]
+          id?: string
+          name: string
+          starts_at: string
+          status?: Database["public"]["Enums"]["event_status"]
+          updated_at?: string
+          venue: string
+        }
+        Update: {
+          capacity?: number
+          check_in_open?: boolean
+          club_id?: string
+          created_at?: string
+          created_by?: string
+          current_round_number?: number
+          description?: string | null
+          ends_at?: string
+          format?: Database["public"]["Enums"]["event_format"]
+          id?: string
+          name?: string
+          starts_at?: string
+          status?: Database["public"]["Enums"]["event_status"]
+          updated_at?: string
+          venue?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_participants: {
+        Row: {
+          confirmed_at: string | null
+          created_at: string
+          disputed_at: string | null
+          id: string
+          match_id: string
+          membership_id: string
+          position: number
+          team: number
+        }
+        Insert: {
+          confirmed_at?: string | null
+          created_at?: string
+          disputed_at?: string | null
+          id?: string
+          match_id: string
+          membership_id: string
+          position: number
+          team: number
+        }
+        Update: {
+          confirmed_at?: string | null
+          created_at?: string
+          disputed_at?: string | null
+          id?: string
+          match_id?: string
+          membership_id?: string
+          position?: number
+          team?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_participants_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_participants_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "club_memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matches: {
+        Row: {
+          best_of: number
+          completed_at: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          court_id: string | null
+          created_at: string
+          dispute_reason: string | null
+          disputed_at: string | null
+          disputed_by: string | null
+          event_id: string
+          finalized_at: string | null
+          id: string
+          match_number: number
+          round_id: string
+          serving_team: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          submitted_at: string | null
+          submitted_by: string | null
+          team_one_score: number
+          team_two_score: number
+          updated_at: string
+          version: number
+          winner_team: number | null
+        }
+        Insert: {
+          best_of?: number
+          completed_at?: string | null
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          court_id?: string | null
+          created_at?: string
+          dispute_reason?: string | null
+          disputed_at?: string | null
+          disputed_by?: string | null
+          event_id: string
+          finalized_at?: string | null
+          id?: string
+          match_number: number
+          round_id: string
+          serving_team?: number | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["match_status"]
+          submitted_at?: string | null
+          submitted_by?: string | null
+          team_one_score?: number
+          team_two_score?: number
+          updated_at?: string
+          version?: number
+          winner_team?: number | null
+        }
+        Update: {
+          best_of?: number
+          completed_at?: string | null
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          court_id?: string | null
+          created_at?: string
+          dispute_reason?: string | null
+          disputed_at?: string | null
+          disputed_by?: string | null
+          event_id?: string
+          finalized_at?: string | null
+          id?: string
+          match_number?: number
+          round_id?: string
+          serving_team?: number | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["match_status"]
+          submitted_at?: string | null
+          submitted_by?: string | null
+          team_one_score?: number
+          team_two_score?: number
+          updated_at?: string
+          version?: number
+          winner_team?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_confirmed_by_fkey"
+            columns: ["confirmed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_court_id_fkey"
+            columns: ["court_id"]
+            isOneToOne: false
+            referencedRelation: "courts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_disputed_by_fkey"
+            columns: ["disputed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_round_id_fkey"
+            columns: ["round_id"]
+            isOneToOne: false
+            referencedRelation: "event_rounds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       player_profiles: {
         Row: {
           dominant_hand: Database["public"]["Enums"]["dominant_hand"] | null
@@ -336,11 +790,164 @@ export type Database = {
         }
         Relationships: []
       }
+      rating_history: {
+        Row: {
+          created_at: string
+          delta: number
+          format: Database["public"]["Enums"]["event_format"]
+          id: number
+          match_id: string
+          membership_id: string
+          new_rating: number
+          previous_rating: number
+        }
+        Insert: {
+          created_at?: string
+          delta: number
+          format: Database["public"]["Enums"]["event_format"]
+          id?: never
+          match_id: string
+          membership_id: string
+          new_rating: number
+          previous_rating: number
+        }
+        Update: {
+          created_at?: string
+          delta?: number
+          format?: Database["public"]["Enums"]["event_format"]
+          id?: never
+          match_id?: string
+          membership_id?: string
+          new_rating?: number
+          previous_rating?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rating_history_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rating_history_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "club_memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      score_events: {
+        Row: {
+          created_at: string
+          delta: number
+          id: number
+          match_id: string
+          recorded_by: string
+          score_one: number
+          score_two: number
+          team: number
+        }
+        Insert: {
+          created_at?: string
+          delta: number
+          id?: never
+          match_id: string
+          recorded_by: string
+          score_one: number
+          score_two: number
+          team: number
+        }
+        Update: {
+          created_at?: string
+          delta?: number
+          id?: never
+          match_id?: string
+          recorded_by?: string
+          score_one?: number
+          score_two?: number
+          team?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "score_events_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "score_events_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      adjust_registration_priority: {
+        Args: { p_delta: number; p_registration_id: string }
+        Returns: {
+          availability: Database["public"]["Enums"]["availability_status"]
+          checked_in_at: string | null
+          created_at: string
+          event_id: string
+          games_played: number
+          id: string
+          last_played_at: string | null
+          membership_id: string
+          queue_priority: number
+          status: Database["public"]["Enums"]["registration_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "event_registrations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      confirm_match_result: {
+        Args: { p_match_id: string }
+        Returns: {
+          best_of: number
+          completed_at: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          court_id: string | null
+          created_at: string
+          dispute_reason: string | null
+          disputed_at: string | null
+          disputed_by: string | null
+          event_id: string
+          finalized_at: string | null
+          id: string
+          match_number: number
+          round_id: string
+          serving_team: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          submitted_at: string | null
+          submitted_by: string | null
+          team_one_score: number
+          team_two_score: number
+          updated_at: string
+          version: number
+          winner_team: number | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "matches"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       create_club: {
         Args: {
           p_country_code: string
@@ -369,8 +976,255 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      dispute_match_result: {
+        Args: { p_match_id: string; p_reason: string }
+        Returns: {
+          best_of: number
+          completed_at: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          court_id: string | null
+          created_at: string
+          dispute_reason: string | null
+          disputed_at: string | null
+          disputed_by: string | null
+          event_id: string
+          finalized_at: string | null
+          id: string
+          match_number: number
+          round_id: string
+          serving_team: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          submitted_at: string | null
+          submitted_by: string | null
+          team_one_score: number
+          team_two_score: number
+          updated_at: string
+          version: number
+          winner_team: number | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "matches"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      generate_event_round: {
+        Args: { p_event_id: string; p_strategy?: string }
+        Returns: {
+          confirmed_by: string | null
+          created_at: string
+          event_id: string
+          explanation: string | null
+          id: string
+          quality_score: number | null
+          round_number: number
+          status: Database["public"]["Enums"]["round_status"]
+          strategy: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "event_rounds"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      record_match_point: {
+        Args: {
+          p_delta: number
+          p_expected_version: number
+          p_match_id: string
+          p_team: number
+        }
+        Returns: {
+          best_of: number
+          completed_at: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          court_id: string | null
+          created_at: string
+          dispute_reason: string | null
+          disputed_at: string | null
+          disputed_by: string | null
+          event_id: string
+          finalized_at: string | null
+          id: string
+          match_number: number
+          round_id: string
+          serving_team: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          submitted_at: string | null
+          submitted_by: string | null
+          team_one_score: number
+          team_two_score: number
+          updated_at: string
+          version: number
+          winner_team: number | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "matches"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      register_event_member: {
+        Args: { p_event_id: string; p_membership_id: string }
+        Returns: {
+          availability: Database["public"]["Enums"]["availability_status"]
+          checked_in_at: string | null
+          created_at: string
+          event_id: string
+          games_played: number
+          id: string
+          last_played_at: string | null
+          membership_id: string
+          queue_priority: number
+          status: Database["public"]["Enums"]["registration_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "event_registrations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      resolve_match_dispute: {
+        Args: {
+          p_match_id: string
+          p_team_one_score: number
+          p_team_two_score: number
+        }
+        Returns: {
+          best_of: number
+          completed_at: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          court_id: string | null
+          created_at: string
+          dispute_reason: string | null
+          disputed_at: string | null
+          disputed_by: string | null
+          event_id: string
+          finalized_at: string | null
+          id: string
+          match_number: number
+          round_id: string
+          serving_team: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          submitted_at: string | null
+          submitted_by: string | null
+          team_one_score: number
+          team_two_score: number
+          updated_at: string
+          version: number
+          winner_team: number | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "matches"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_registration_availability: {
+        Args: {
+          p_availability: Database["public"]["Enums"]["availability_status"]
+          p_registration_id: string
+        }
+        Returns: {
+          availability: Database["public"]["Enums"]["availability_status"]
+          checked_in_at: string | null
+          created_at: string
+          event_id: string
+          games_played: number
+          id: string
+          last_played_at: string | null
+          membership_id: string
+          queue_priority: number
+          status: Database["public"]["Enums"]["registration_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "event_registrations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_registration_check_in: {
+        Args: { p_checked_in: boolean; p_registration_id: string }
+        Returns: {
+          availability: Database["public"]["Enums"]["availability_status"]
+          checked_in_at: string | null
+          created_at: string
+          event_id: string
+          games_played: number
+          id: string
+          last_played_at: string | null
+          membership_id: string
+          queue_priority: number
+          status: Database["public"]["Enums"]["registration_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "event_registrations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_match_result: {
+        Args: { p_expected_version: number; p_match_id: string }
+        Returns: {
+          best_of: number
+          completed_at: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          court_id: string | null
+          created_at: string
+          dispute_reason: string | null
+          disputed_at: string | null
+          disputed_by: string | null
+          event_id: string
+          finalized_at: string | null
+          id: string
+          match_number: number
+          round_id: string
+          serving_team: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          submitted_at: string | null
+          submitted_by: string | null
+          team_one_score: number
+          team_two_score: number
+          updated_at: string
+          version: number
+          winner_team: number | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "matches"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
+      announcement_status: "draft" | "published" | "archived"
+      availability_status:
+        | "waiting"
+        | "on_deck"
+        | "playing"
+        | "resting"
+        | "unavailable"
+        | "finished"
       club_role:
         | "administrator"
         | "event_organizer"
@@ -379,12 +1233,36 @@ export type Database = {
         | "member"
         | "guest"
       club_status: "active" | "archived"
+      court_status: "available" | "in_use" | "paused" | "unavailable"
       dominant_hand: "left" | "right" | "ambidextrous"
+      event_format: "singles" | "doubles" | "mixed_doubles" | "open_play"
+      event_status:
+        | "draft"
+        | "published"
+        | "check_in_open"
+        | "active"
+        | "paused"
+        | "completed"
+        | "cancelled"
       gender_category: "female" | "male" | "non_binary" | "prefer_not_to_say"
+      match_status:
+        | "scheduled"
+        | "in_progress"
+        | "awaiting_confirmation"
+        | "completed"
+        | "disputed"
+        | "cancelled"
       membership_status: "invited" | "active" | "inactive" | "suspended"
       play_preference: "competitive" | "balanced" | "social"
       preferred_format: "singles" | "doubles" | "either"
       preferred_side: "left" | "right" | "either"
+      registration_status:
+        | "registered"
+        | "waitlisted"
+        | "checked_in"
+        | "withdrawn"
+        | "no_show"
+      round_status: "draft" | "confirmed" | "active" | "completed" | "cancelled"
       skill_level:
         | "beginner"
         | "novice"
@@ -521,6 +1399,15 @@ export const Constants = {
   },
   public: {
     Enums: {
+      announcement_status: ["draft", "published", "archived"],
+      availability_status: [
+        "waiting",
+        "on_deck",
+        "playing",
+        "resting",
+        "unavailable",
+        "finished",
+      ],
       club_role: [
         "administrator",
         "event_organizer",
@@ -530,12 +1417,39 @@ export const Constants = {
         "guest",
       ],
       club_status: ["active", "archived"],
+      court_status: ["available", "in_use", "paused", "unavailable"],
       dominant_hand: ["left", "right", "ambidextrous"],
+      event_format: ["singles", "doubles", "mixed_doubles", "open_play"],
+      event_status: [
+        "draft",
+        "published",
+        "check_in_open",
+        "active",
+        "paused",
+        "completed",
+        "cancelled",
+      ],
       gender_category: ["female", "male", "non_binary", "prefer_not_to_say"],
+      match_status: [
+        "scheduled",
+        "in_progress",
+        "awaiting_confirmation",
+        "completed",
+        "disputed",
+        "cancelled",
+      ],
       membership_status: ["invited", "active", "inactive", "suspended"],
       play_preference: ["competitive", "balanced", "social"],
       preferred_format: ["singles", "doubles", "either"],
       preferred_side: ["left", "right", "either"],
+      registration_status: [
+        "registered",
+        "waitlisted",
+        "checked_in",
+        "withdrawn",
+        "no_show",
+      ],
+      round_status: ["draft", "confirmed", "active", "completed", "cancelled"],
       skill_level: ["beginner", "novice", "intermediate", "advanced", "expert"],
     },
   },
