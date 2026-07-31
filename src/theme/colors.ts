@@ -1,0 +1,78 @@
+export const palette = {
+  pickle: {
+    50: '#F3FCE8',
+    100: '#E2F8C8',
+    200: '#C7EF99',
+    300: '#A8E35F',
+    400: '#8BD133',
+    500: '#6FB51E',
+    600: '#548F14',
+    700: '#416E14',
+    800: '#365717',
+    900: '#2F4918',
+  },
+  court: {
+    50: '#EFF8FF',
+    100: '#DCEEFF',
+    300: '#8DCBFF',
+    500: '#2188E5',
+    600: '#126BBC',
+    700: '#115695',
+    900: '#113E68',
+  },
+  neutral: {
+    0: '#FFFFFF',
+    50: '#F8FAFC',
+    100: '#F1F5F9',
+    200: '#E2E8F0',
+    300: '#CBD5E1',
+    400: '#94A3B8',
+    500: '#64748B',
+    600: '#475569',
+    700: '#334155',
+    800: '#1E293B',
+    900: '#0F172A',
+    950: '#070D19',
+  },
+  red: {
+    50: '#FEE2E2',
+    700: '#B91C1C',
+    800: '#991B1B',
+  },
+  amber: {
+    50: '#FEF3C7',
+    800: '#92400E',
+  },
+  green: {
+    50: '#DCFCE7',
+    800: '#166534',
+  },
+  blue: {
+    50: '#DBEAFE',
+    700: '#1D4ED8',
+  },
+} as const;
+
+export const lightColors = {
+  background: palette.neutral[50],
+  surface: palette.neutral[0],
+  surfaceSubtle: palette.neutral[100],
+  text: palette.neutral[900],
+  textMuted: palette.neutral[600],
+  border: palette.neutral[200],
+  primary: palette.pickle[500],
+  primaryPressed: palette.pickle[600],
+  primaryText: palette.neutral[950],
+  link: palette.court[700],
+  focus: palette.court[500],
+  errorBackground: palette.red[50],
+  errorText: palette.red[700],
+  successBackground: palette.green[50],
+  successText: palette.green[800],
+  warningBackground: palette.amber[50],
+  warningText: palette.amber[800],
+  infoBackground: palette.blue[50],
+  infoText: palette.blue[700],
+} as const;
+
+export type AppColors = typeof lightColors;
