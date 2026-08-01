@@ -1,8 +1,0 @@
-# Machine-local Supabase CLI link/cache state
-.branches
-.temp
-
-# dotenvx
-.env.keys
-.env.local
-.env.*.local

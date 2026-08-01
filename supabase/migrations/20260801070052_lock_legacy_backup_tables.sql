@@ -1,0 +1,15 @@
+alter table legacy_backup_20260801.announcements enable row level security;
+alter table legacy_backup_20260801.club_invitations enable row level security;
+alter table legacy_backup_20260801.club_memberships enable row level security;
+alter table legacy_backup_20260801.club_role_assignments enable row level security;
+alter table legacy_backup_20260801.clubs enable row level security;
+alter table legacy_backup_20260801.courts enable row level security;
+alter table legacy_backup_20260801.event_registrations enable row level security;
+alter table legacy_backup_20260801.event_rounds enable row level security;
+alter table legacy_backup_20260801.events enable row level security;
+alter table legacy_backup_20260801.match_participants enable row level security;
+alter table legacy_backup_20260801.matches enable row level security;
+alter table legacy_backup_20260801.player_profiles enable row level security;
+alter table legacy_backup_20260801.profiles enable row level security;
+alter table legacy_backup_20260801.rating_history enable row level security;
+alter table legacy_backup_20260801.score_events enable row level security;;
