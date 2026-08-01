@@ -1,47 +1,78 @@
 # Dependencies
-node_modules/
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# Expo
-.expo/
-dist/
-web-build/
-expo-env.d.ts
+# Tests and coverage
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/.playwright-mcp/
 
-# Native build artifacts and credentials
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+# Local QA screenshots and agent scratch data
+/login-desktop.png
+/login-mobile.png
+/phase1-sign-up-desktop.png
+/phase1-sign-up-mobile.png
+/qa-login-desktop-1440.png
+/qa-login-mobile-320.png
+/.sisyphus/
 
-# Generated native projects (Expo prebuild)
-/android/
-/ios/
+# Next.js
+/.next/
+/out/
 
-# Metro
-.metro-health-check*
+# Production builds
+/build
+/dist
 
-# Debug logs
-npm-debug.*
-yarn-debug.*
-yarn-error.*
+# Vercel
+.vercel
 
-# Local environment files
-.env*
+# Supabase local development
+supabase/.branches
+supabase/.temp
+supabase/.env
+.supabase/
+
+# Environment variables and secrets
+.env
+.env.*
 !.env.example
 
-# TypeScript
-*.tsbuildinfo
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# macOS
+# Local tooling and editor files
 .DS_Store
+Thumbs.db
 *.pem
+*.key
+*.p8
+*.p12
+*.orig.*
+.idea/
+.vscode/
+*.tsbuildinfo
+next-env.d.ts
 
+# Turbo
+.turbo
+
+# OpenCode local configuration (keep the project Supabase skill)
 .opencode/*
 !.opencode/skills/
 .opencode/skills/*
 !.opencode/skills/supabase-github-branching/
 !.opencode/skills/supabase-github-branching/SKILL.md
-documentation
 opencode.json
