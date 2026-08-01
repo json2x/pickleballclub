@@ -23,3 +23,8 @@ Release verification still required:
 - Broader Stitch visual comparison remains partial.
 - Production approval for AI-generated brand assets is still pending. Supabase leaked-password protection is still disabled. Supabase CLI `2.111.0` has no supported HIBP `config.toml` field or arbitrary Management API command, so enabling it requires a Pro-plan Dashboard session or a separately supplied Management API PAT. Intentional `SECURITY DEFINER` advisor notices remain recorded.
 - The CLI password dry-run stalled while initializing the login role because the database password was unavailable. Hosted rollback suites validated migration boundaries instead.
+
+## 2026-08-02, hosted release gates deferred
+
+- Product decision: defer enabling Supabase leaked-password protection and credential-backed hosted E2E until a later release-readiness pass.
+- Phase 1 remains code-complete and locally verified, but production release acceptance remains intentionally incomplete until those gates and brand approval are revisited.

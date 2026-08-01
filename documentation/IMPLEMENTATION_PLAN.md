@@ -267,7 +267,7 @@ Every schema migration must include or be followed by:
 - [ ] Validate required public/server environment variables at build/startup without exposing values.
 - [x] Reconcile hosted/local migration history and establish the new active schema sequence.
 - [ ] Add safe development seed data in `supabase/seed.sql` only if the hosted-only workflow permits it; otherwise document the deviation.
-- [ ] Enable leaked-password protection in Supabase Auth. This requires a Pro-plan Dashboard session or Management API PAT; Supabase CLI `2.111.0` cannot configure the HIBP field safely through `config.toml` or `config push`.
+- [ ] **DEFERRED** Enable leaked-password protection in Supabase Auth. This requires a Pro-plan Dashboard session or Management API PAT; Supabase CLI `2.111.0` cannot configure the HIBP field safely through `config.toml` or `config push`.
 
 ## 0.6 CI and Phase 0 gate
 
