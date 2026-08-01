@@ -1,88 +1,51 @@
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
-import type { LucideIcon } from 'lucide-react-native';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { ComponentProps } from 'react';
 
-import { AppText } from './app-text';
-import { lightColors, radius, spacing } from '@/theme';
+import { cn } from '@/lib/utils';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
+const buttonVariants = cva(
+  'inline-flex min-h-target shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-ui px-4 font-sans text-sm font-semibold transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ui-ring focus-visible:ring-offset-2 focus-visible:ring-offset-ui-background disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-ui-destructive',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-ui-primary text-ui-primary-foreground hover:bg-ui-primary-hover',
+        secondary: 'bg-ui-secondary text-ui-secondary-foreground hover:bg-ui-secondary-hover',
+        outline:
+          'border border-ui-border bg-ui-card text-ui-foreground shadow-ui-control hover:bg-ui-muted',
+        ghost: 'text-ui-foreground hover:bg-ui-muted',
+        destructive: 'bg-ui-destructive text-ui-destructive-foreground hover:bg-ui-destructive-hover',
+      },
+      size: {
+        sm: 'px-3 text-ui-label',
+        default: 'px-4',
+        lg: 'min-h-12 px-6 text-base',
+        icon: 'size-target p-0',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'default',
+    },
+  },
+);
 
-type ButtonProps = {
-  label: string;
-  onPress: () => void;
-  variant?: ButtonVariant;
-  loading?: boolean;
-  disabled?: boolean;
-  icon?: LucideIcon;
-};
+type ButtonProps = ComponentProps<'button'> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  };
 
-const variants = StyleSheet.create({
-  primary: { backgroundColor: lightColors.primary, borderColor: lightColors.primary },
-  secondary: { backgroundColor: lightColors.surface, borderColor: lightColors.border },
-  ghost: { backgroundColor: 'transparent', borderColor: 'transparent' },
-  destructive: { backgroundColor: lightColors.errorText, borderColor: lightColors.errorText },
-});
-
-export function Button({
-  label,
-  onPress,
-  variant = 'primary',
-  loading = false,
-  disabled = false,
-  icon: Icon,
-}: ButtonProps) {
-  const isDisabled = disabled || loading;
-  const lightText = variant === 'destructive';
+function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
+  const Component = asChild ? Slot : 'button';
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled: isDisabled, busy: loading }}
-      disabled={isDisabled}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.base,
-        variants[variant],
-        pressed && !isDisabled && styles.pressed,
-        isDisabled && styles.disabled,
-      ]}
-    >
-      {loading ? (
-        <ActivityIndicator color={lightText ? lightColors.surface : lightColors.text} />
-      ) : (
-        <View style={styles.content}>
-          {Icon ? <Icon size={20} color={lightText ? lightColors.surface : lightColors.text} /> : null}
-          <AppText style={lightText && styles.lightText} variant="label">
-            {label}
-          </AppText>
-        </View>
-      )}
-    </Pressable>
+    <Component
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
   );
 }
 
-const styles = StyleSheet.create({
-  base: {
-    minHeight: 48,
-    minWidth: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing[5],
-    borderRadius: radius.sm,
-    borderWidth: 1,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[2],
-  },
-  pressed: {
-    opacity: 0.78,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  lightText: {
-    color: lightColors.surface,
-  },
-});
+export { Button, buttonVariants };
+export type { ButtonProps };
