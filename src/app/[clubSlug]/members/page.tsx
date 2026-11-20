@@ -13,7 +13,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Member Directory | Pickle-lo',
-  description: 'Manage and view your pickleball club members, ranks, and skill ratings.',
+  description: 'Manage your club community and player directory.',
 };
 
 type MembersPageProps = {
@@ -44,33 +44,44 @@ export default async function MembersPage({ params, searchParams }: MembersPageP
   });
 
   const supabase = await createClient();
-  const { members } = await getClubMembers(supabase, workspaceResult.workspace.club.id, filters);
+  const { members, total, page, pageSize } = await getClubMembers(
+    supabase,
+    workspaceResult.workspace.club.id,
+    filters
+  );
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* Page Header (Replicated Dashboard Header Styling) */}
+      <header className="dashboard-header">
         <div>
-          <h1 className="font-headline-md text-3xl sm:text-4xl text-on-surface">Members</h1>
-          <p className="font-body-md text-sm text-on-surface-variant mt-1">
-            Manage your club community and player directory.
-          </p>
+          <p className="dashboard-eyebrow">Club directory</p>
+          <h1>Members.</h1>
+          <p>Manage your club community.</p>
         </div>
 
         <InviteMemberModal
           clubId={workspaceResult.workspace.club.id}
           clubSlug={clubSlug}
         />
-      </div>
+      </header>
 
-      {/* Sub navigation (Directory vs Invitations) */}
+      {/* Directory / Invitations Navigation Tabs */}
       <MembersSubNav clubSlug={clubSlug} />
 
       {/* Filters & Search Bar */}
       <MemberFilters />
 
       {/* Member Directory Table */}
-      <MemberDirectoryTable members={members} clubSlug={clubSlug} />
+      <MemberDirectoryTable
+        members={members}
+        clubSlug={clubSlug}
+        totalMembers={total}
+        currentPage={page}
+        pageSize={pageSize}
+        currentUserRole={workspaceResult.workspace.membership.role}
+        currentUserId={workspaceResult.workspace.identityId}
+      />
     </div>
   );
 }

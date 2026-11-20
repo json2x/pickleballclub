@@ -28,3 +28,18 @@ Release verification still required:
 
 - Product decision: defer enabling Supabase leaked-password protection and credential-backed hosted E2E until a later release-readiness pass.
 - Phase 1 remains code-complete and locally verified, but production release acceptance remains intentionally incomplete until those gates and brand approval are revisited.
+
+## 2026-08-02, Phase 2 Members & Invitations implemented and aligned with Stitch screen
+
+Completed and verified on branch `phase2`:
+
+- Applied 3 database migrations to hosted Supabase:
+  1. `20260802010000_phase2_member_player_profiles` — `club_player_profiles` table, `skill_level` and `court_side` enums, RLS policies, auto-creation trigger on active membership, and `get_club_members`, `get_club_member_detail`, `update_player_profile`, `update_member_role`, `deactivate_member` RPCs. Ratings start at 0 with non-negative constraints.
+  2. `20260802010100_phase2_member_avatars` — Private `member-avatars` storage bucket (2 MiB limit, path validation, RLS policies for read/upload/update/delete).
+  3. `20260802010200_phase2_invitation_management` — `get_club_invitations` and `revoke_club_invitation` RPCs plus performance index.
+- Regenerated `src/types/database.types.ts` with complete Phase 2 PostgREST types.
+- Feature module at `src/features/members/`: Zod schemas (`validation.ts`), server query RPC wrappers (`queries.ts`), server actions (`actions.ts`), error mappers (`errors.ts`), action state handling (`action-state.ts`), and avatar helpers (`avatar.ts`).
+- Email service module at `src/lib/email/`: `EmailService` interface, `ResendEmailService` (direct fetch API integration), branded HTML template (`templates.ts`), and development fallback logger.
+- UI components at `src/components/members/`: `MembersSubNav`, `MemberDirectoryTable` (fully aligned with Stitch screen `af16c6b48ea74f259c05ce17ddd5a64d` featuring Rank #, Player info, Rating points, 30d Trend pill badges, Win Rate with visual progress bar, Joined date, and Pagination footer), `MemberFilters` (debounced search + dropdowns for Status, Skill level, and Role), `InviteMemberModal` (single/bulk invite with copyable link), `InvitationsTable`, `MemberRoleBadge`, `AvatarUpload`, `MemberActionsMenu`, and `RevokeInvitationButton`.
+- Updated routes: `/[clubSlug]/members`, `/[clubSlug]/members/[memberId]`, `/[clubSlug]/members/invitations`, and enabled Members navigation links in `ClubShell` (sidebar & mobile).
+- Quality evidence: 80 Vitest unit tests pass, 8 Playwright E2E tests pass, `npm run lint` passes (0 errors), `npm run typecheck` passes (0 errors), and `npm run build` succeeds cleanly.

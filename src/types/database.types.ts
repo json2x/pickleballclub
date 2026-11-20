@@ -1,4 +1,4 @@
-export type Json =
+﻿export type Json =
   | string
   | number
   | boolean
@@ -11,31 +11,6 @@ export type Database = {
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.15"
-  }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
   }
   public: {
     Tables: {
@@ -209,6 +184,72 @@ export type Database = {
           },
           {
             foreignKeyName: "club_memberships_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_player_profiles: {
+        Row: {
+          avatar_path: string | null
+          bio: string | null
+          club_id: string
+          created_at: string
+          id: string
+          losses: number
+          matches_played: number
+          preferred_side: Database["public"]["Enums"]["court_side"]
+          rating_points: number
+          rating_trend_30d: number
+          skill_level: Database["public"]["Enums"]["skill_level"]
+          updated_at: string
+          user_id: string
+          wins: number
+        }
+        Insert: {
+          avatar_path?: string | null
+          bio?: string | null
+          club_id: string
+          created_at?: string
+          id?: string
+          losses?: number
+          matches_played?: number
+          preferred_side?: Database["public"]["Enums"]["court_side"]
+          rating_points?: number
+          rating_trend_30d?: number
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          updated_at?: string
+          user_id: string
+          wins?: number
+        }
+        Update: {
+          avatar_path?: string | null
+          bio?: string | null
+          club_id?: string
+          created_at?: string
+          id?: string
+          losses?: number
+          matches_played?: number
+          preferred_side?: Database["public"]["Enums"]["court_side"]
+          rating_points?: number
+          rating_trend_30d?: number
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          updated_at?: string
+          user_id?: string
+          wins?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_player_profiles_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_player_profiles_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -394,6 +435,32 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      deactivate_member: {
+        Args: { p_club_id: string; p_reason?: string; p_user_id: string }
+        Returns: Json
+      }
+      get_club_invitations: {
+        Args: { p_club_id: string; p_status_filter?: string }
+        Returns: Json
+      }
+      get_club_member_detail: {
+        Args: { p_club_id: string; p_user_id: string }
+        Returns: Json
+      }
+      get_club_members: {
+        Args: {
+          p_club_id: string
+          p_page?: number
+          p_page_size?: number
+          p_role?: string
+          p_search?: string
+          p_skill?: string
+          p_sort_by?: string
+          p_sort_order?: string
+          p_status?: string
+        }
+        Returns: Json
+      }
       get_my_profile: {
         Args: never
         Returns: {
@@ -456,6 +523,16 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      member_avatar_club_id: { Args: { object_path: string }; Returns: string }
+      member_avatar_path_is_valid: {
+        Args: { object_path: string }
+        Returns: boolean
+      }
+      member_avatar_user_id: { Args: { object_path: string }; Returns: string }
+      revoke_club_invitation: {
+        Args: { p_club_id: string; p_invitation_id: string }
+        Returns: Json
+      }
       search_joinable_clubs: {
         Args: { p_query?: string }
         Returns: {
@@ -513,11 +590,31 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      update_member_role: {
+        Args: {
+          p_club_id: string
+          p_new_role: string
+          p_reason?: string
+          p_user_id: string
+        }
+        Returns: Json
+      }
+      update_player_profile: {
+        Args: {
+          p_bio?: string
+          p_club_id: string
+          p_preferred_side?: string
+          p_skill_level?: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       club_join_policy: "open" | "approval" | "invite_only"
       club_membership_status: "pending" | "active" | "inactive"
       club_role: "owner" | "admin" | "member"
+      court_side: "left" | "right" | "both" | "no_preference"
+      skill_level: "beginner" | "intermediate" | "advanced" | "pro"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -643,14 +740,14 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       club_join_policy: ["open", "approval", "invite_only"],
       club_membership_status: ["pending", "active", "inactive"],
       club_role: ["owner", "admin", "member"],
+      court_side: ["left", "right", "both", "no_preference"],
+      skill_level: ["beginner", "intermediate", "advanced", "pro"],
     },
   },
 } as const
+

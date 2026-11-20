@@ -34,20 +34,19 @@ export default async function InvitationsPage({ params }: InvitationsPageProps) 
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* Page Header (Dashboard Header Parity) */}
+      <header className="dashboard-header">
         <div>
-          <h1 className="font-headline-md text-3xl sm:text-4xl text-on-surface">Club Invitations</h1>
-          <p className="font-body-md text-sm text-on-surface-variant mt-1">
-            Track and manage pending and accepted member invitations.
-          </p>
+          <p className="dashboard-eyebrow">Club invitations</p>
+          <h1>Invitations.</h1>
+          <p>Track and manage pending and accepted member invitations.</p>
         </div>
 
         <InviteMemberModal
           clubId={workspaceResult.workspace.club.id}
           clubSlug={clubSlug}
         />
-      </div>
+      </header>
 
       {/* Sub navigation (Directory vs Invitations) */}
       <MembersSubNav clubSlug={clubSlug} />

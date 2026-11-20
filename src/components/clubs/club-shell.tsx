@@ -65,10 +65,10 @@ export function ClubShell({ workspace, children }: { workspace: ClubWorkspace; c
             <CalendarDays aria-hidden="true" />
             Events <small>Coming next</small>
           </span>
-          <span className="club-nav-item club-nav-item-disabled" aria-disabled="true">
+          <Link className="club-nav-item" href={`/${encodeURIComponent(workspace.club.slug)}/members`}>
             <UsersRound aria-hidden="true" />
-            Members <small>Coming next</small>
-          </span>
+            Members
+          </Link>
           <span className="club-nav-item club-nav-item-disabled" aria-disabled="true">
             <BarChart3 aria-hidden="true" />
             Stats <small>Coming next</small>
@@ -95,12 +95,18 @@ export function ClubShell({ workspace, children }: { workspace: ClubWorkspace; c
         </div>
       </aside>
 
-      <main className="club-content">{children}</main>
+      <main className="club-content">
+        <div className="club-page-container">{children}</div>
+      </main>
 
       <nav className="club-mobile-nav" aria-label="Mobile club navigation">
         <Link href={dashboardHref} aria-current="page">
           <LayoutDashboard aria-hidden="true" />
           Dashboard
+        </Link>
+        <Link href={`/${encodeURIComponent(workspace.club.slug)}/members`}>
+          <UsersRound aria-hidden="true" />
+          Members
         </Link>
         <span aria-disabled="true">
           <CalendarDays aria-hidden="true" />
